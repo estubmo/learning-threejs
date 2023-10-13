@@ -1,9 +1,9 @@
-import Example1 from "../../components/Example1.astro";
+import Example4 from "../../components/Example4.astro";
 import Layout from "../../layouts/Layout.astro";
 
-<Layout title="Basics - Learning Three.js">
+<Layout title="Example 4 - Learning Three.js">
   <div class="h-screen py-10 md:py-20">
-    <Example1 title="Basics" description="Render, Camera, Cube, Rotation" />
+    <Example4 title="Animations" description="With Clock" />
   </div>
   <div class="h-screen overflow-y-scroll rounded-2xl my-10 md:my-20">
 
@@ -13,7 +13,8 @@ import * as THREE from 'three';
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 
 // camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth
+ / window.innerHeight);
 camera.position.set(0, 0, 4);
 
 // position camera
@@ -22,7 +23,9 @@ camera.position.set(1, 1, 5);
 // renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
 renderer.setClearAlpha(0);
+
 
 // canvas
 canvas.appendChild(renderer.domElement);
@@ -34,8 +37,10 @@ const material = new THREE.MeshBasicMaterial({ color: "skyblue" });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
+
 // position cube
 mesh.position.set(2, 1, 1);
+
 
 const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
@@ -46,18 +51,23 @@ mesh.scale.set(1, 2, 3);
 // rotate cube - euler
 mesh.rotation.y = Math.PI * 0.75;
 
+
 // camera - look at
 camera.lookAt(mesh.position);
 
+
 window.addEventListener('resize', onWindowResize);
 function onWindowResize() {
-  camera.updateProjectionMatrix();
-  camera.aspect = window.innerWidth / window.innerHeight;
-  renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.updateProjectionMatrix();
+    camera.aspect = window.innerWidth / window.innerHeight;
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-renderer.render(scene, camera);
+function animate() {
+    renderer.render(scene, camera);
+}
 ```
 
   </div>
+
 </Layout>

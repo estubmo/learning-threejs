@@ -3,12 +3,27 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Learning Three.js">
-  <h1 class="w-full text-center text-4xl font-thin">Hello World!</h1>
-  <div id="canvas-container" class="flex aspect-square w-full justify-center">
-    <ul>
-      <li>
-        <a href="examples/1" class="hover:underline">Example 1</a>
-      </li>
-    </ul>
+  <div class="space-y-10 py-10 md:py-20">
+    <h1 class="w-full text-center text-4xl font-thin">Let's Animate!</h1>
+    <div class="flex w-full justify-center">
+      <ul class="space-y-2">
+        <li>
+          <a href="examples/1" class="hover:underline">Basics</a>
+        </li>
+        <li>
+          <a href="examples/2" class="hover:underline">Groups</a>
+        </li>
+        <li>
+          <a href="examples/3" class="hover:underline"
+            >Animations - With Delta Time</a
+          >
+        </li>
+        <li>
+          <a href="examples/4" class="hover:underline"
+            >Animations - With Clock</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </Layout>
