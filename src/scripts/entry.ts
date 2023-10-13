@@ -1,19 +1,18 @@
 import * as THREE from 'three';
 
+const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 // camera
-const camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -100000, 100000);
-camera.position.set(0, 0, 1000);
-camera.quaternion.setFromEuler(new THREE.Euler(0, 0, 0));
+const camera = new THREE.PerspectiveCamera(75, canvas.getBoundingClientRect().width / canvas.getBoundingClientRect().height);
+camera.position.set(0, 0, 500);
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(canvas.getBoundingClientRect().width - 20, canvas.getBoundingClientRect().height);
 renderer.setAnimationLoop(animate);
 renderer.setClearAlpha(0);
 
 
 // canvas
-const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 canvas.appendChild(renderer.domElement);
 
 // scene settings
@@ -26,7 +25,7 @@ scene.add(mesh);
 window.addEventListener('resize', onWindowResize);
 function onWindowResize() {
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(canvas.getBoundingClientRect().width, canvas.getBoundingClientRect().height);
 }
 
 function animate() {
