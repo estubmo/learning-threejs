@@ -1,0 +1,27 @@
+{
+  "name": "learning-threejs",
+  "description": "A simple Astro.js project for learning Three.js with Tailwind CSS, Bun, and Biome.",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "Eirik Mo <eirk@mowebdev.com> (http://www.mowebdev.com/)",
+  "keywords": ["astro", "threejs", "typescript", "tailwindcss", "biomejs", "bun"],
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.0.2",
+    "@biomejs/biome": "^1.2.2",
+    "astro": "^3.3.0",
+    "tailwindcss": "^3.0.24",
+    "three": "^0.157.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.157.0",
+    "bun-types": "^1.0.6"
+  }
+}
