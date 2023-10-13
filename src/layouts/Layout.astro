@@ -17,6 +17,32 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <main
+      class="flex min-h-screen justify-center bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-sky-500 via-orange-200 to-yellow-600"
+    >
+      <div class="container flex w-full flex-col space-y-10 px-10 py-20">
+        <slot />
+      </div>
+    </main>
   </body>
+  <style is:global>
+    div[data-rehype-pretty-code-fragment] {
+      background-color: rgba(200, 200, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    pre > code {
+      overflow-x: scroll;
+      display: grid;
+      background-color: rgba(200, 200, 255, 0.09);
+      word-wrap: break-word;
+      padding: 1rem;
+    }
+    .highlighted {
+      background-color: rgba(200, 200, 255, 0.1);
+      border-left-color: #60a5fa;
+      border-left-width: 3px;
+      border-left-style: solid;
+    }
+  </style>
 </html>

@@ -1,27 +1,44 @@
 {
   "name": "learning-threejs",
-  "description": "A simple Astro.js project for learning Three.js with Tailwind CSS, Bun, and Biome.",
+  "description": "A simple Astro.js project for learning Three.js with Tailwind CSS and Bun.",
   "type": "module",
   "version": "0.0.1",
   "author": "Eirik Mo <eirk@mowebdev.com> (http://www.mowebdev.com/)",
-  "keywords": ["astro", "threejs", "typescript", "tailwindcss", "biomejs", "bun"],
+  "keywords": [
+    "astro",
+    "threejs",
+    "typescript",
+    "tailwindcss",
+    "bun"
+  ],
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,astro}\""
   },
   "dependencies": {
+    "@astrojs/mdx": "^1.1.2",
     "@astrojs/tailwind": "^5.0.2",
-    "@biomejs/biome": "^1.2.2",
     "astro": "^3.3.0",
     "tailwindcss": "^3.0.24",
     "three": "^0.157.0"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@types/three": "^0.157.0",
-    "bun-types": "^1.0.6"
+    "@typescript-eslint/parser": "^6.7.5",
+    "bun-types": "^1.0.6",
+    "eslint": "^8.51.0",
+    "eslint-plugin-astro": "^0.29.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "prettier": "^3.0.3",
+    "prettier-config-standard": "^7.0.0",
+    "prettier-plugin-astro": "^0.12.0",
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "rehype-pretty-code": "^0.10.1"
   }
 }
