@@ -1,6 +1,6 @@
 # Learning Three.js
 
-A simple repository using [Astro](https://astro.build/), [Tailwind CSS](https://tailwindcss.com/), and [Bun](https://bun.sh/) as a scaffold for learning [Three.js](https://threejs.org/).
+A simple repository using [Astro](https://astro.build/), [GSAP](https://gsap.com/), [Tailwind CSS](https://tailwindcss.com/), and [Bun](https://bun.sh/) as a scaffold for learning [Three.js](https://threejs.org/).
 
 This repository will contain a bunch of example scenes created in Three.js.
 

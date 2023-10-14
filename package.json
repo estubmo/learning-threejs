@@ -1,22 +1,27 @@
 {
   "name": "learning-threejs",
-  "description": "A simple Astro.js project for learning Three.js with Tailwind CSS and Bun.",
+  "description": "A simple Astro.js project for learning Three.js with GSAP, Tailwind CSS and Bun.",
   "type": "module",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/estubmo/learning-threejs.git"
+  },
   "author": "Eirik Mo <eirk@mowebdev.com> (http://www.mowebdev.com/)",
   "keywords": [
     "astro",
     "threejs",
     "typescript",
     "tailwindcss",
+    "gsap",
     "bun"
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "dev": "bunx --bun astro dev",
+    "start": "bunx --bun astro dev",
+    "build": "bunx --bun astro build",
+    "preview": "bunx --bun astro preview",
     "astro": "astro",
     "lint": "prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,astro}\""
   },
@@ -24,6 +29,7 @@
     "@astrojs/mdx": "^1.1.2",
     "@astrojs/tailwind": "^5.0.2",
     "astro": "^3.3.0",
+    "gsap": "^3.12.2",
     "tailwindcss": "^3.0.24",
     "three": "^0.157.0"
   },
