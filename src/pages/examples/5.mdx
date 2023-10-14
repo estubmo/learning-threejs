@@ -1,7 +1,7 @@
 import Example5 from "../../components/Example5.astro";
 import Layout from "../../layouts/Layout.astro";
 
-<Layout title="Example 5 - Learning Three.js">
+<Layout title="Animations w/ GSAP - Learning Three.js">
   <div class="h-screen py-10 md:py-20">
     <Example5 title="Animations" description="With GSAP and Play Button" />
   </div>
@@ -99,7 +99,7 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
-  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
