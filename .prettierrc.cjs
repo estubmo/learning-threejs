@@ -1,12 +1,11 @@
 /** @type {import("prettier").Config} */
+
 module.exports = {
-  ...require("prettier-config-standard"),
-  pluginSearchDirs: [__dirname],
-  tailwindConfig: "./tailwind.config.mjs",
+  tailwindConfig: "./tailwind.config.ts",
   plugins: [
-    require.resolve("prettier-plugin-astro"),
-    require.resolve("prettier-plugin-tailwindcss"),
-    require.resolve("@ianvs/prettier-plugin-sort-imports"),
+    "prettier-plugin-astro",
+    "prettier-plugin-tailwindcss",
+    "@ianvs/prettier-plugin-sort-imports",
   ],
   singleQuote: false,
   jsxSingleQuote: false,

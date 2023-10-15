@@ -1,9 +1,12 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 
 // camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+);
 camera.position.set(0, 0, 4);
 
 // position camera
@@ -39,13 +42,13 @@ mesh.rotation.y = Math.PI * 0.75;
 // camera - look at
 camera.lookAt(mesh.position);
 
-window.addEventListener('resize', onWindowResize);
+window.addEventListener("resize", onWindowResize);
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 renderer.render(scene, camera);

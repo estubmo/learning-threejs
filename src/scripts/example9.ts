@@ -1,29 +1,27 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
-const fullScreenButton = document.getElementById('full-screen-button')!;
+const fullScreenButton = document.getElementById("full-screen-button")!;
 
-fullScreenButton.onclick = () => {
+fullScreenButton.onclick = async () => {
   if (document.fullscreenElement) {
-    document.exitFullscreen();
+    await document.exitFullscreen();
   } else {
-    canvas.requestFullscreen();
+    await canvas.requestFullscreen();
   }
-}
+};
 /**
  * cursor
  */
-
 const cursor = {
   x: 0,
-  y: 0
-}
+  y: 0,
+};
 
-window.addEventListener('mousemove', (event) => {
+window.addEventListener("mousemove", (event) => {
   cursor.x = event.clientX / window.innerWidth - 0.5;
   cursor.y = -(event.clientY / window.innerHeight - 0.5);
-
 });
 
 // camera
@@ -45,9 +43,9 @@ canvas.appendChild(renderer.domElement);
 
 // scene
 const scene = new THREE.Scene();
-var spotLight = new THREE.SpotLight("green");
-var spotLight2 = new THREE.SpotLight("blue");
-var spotLight3 = new THREE.SpotLight("orange");
+const spotLight = new THREE.SpotLight("green");
+const spotLight2 = new THREE.SpotLight("blue");
+const spotLight3 = new THREE.SpotLight("orange");
 spotLight.position.set(0, 4, 0);
 spotLight2.position.set(0, 0, 4);
 spotLight3.position.set(4, 0, 0);
@@ -58,27 +56,26 @@ scene.add(spotLight);
 scene.add(spotLight2);
 scene.add(spotLight3);
 
-
 const cube1 = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
-  new THREE.MeshPhongMaterial({ color: 0xffffff })
+  new THREE.MeshPhongMaterial({ color: 0xffffff }),
 );
 
 scene.add(cube1);
-spotLight.lookAt(cube1.position)
-spotLight2.lookAt(cube1.position)
-spotLight3.lookAt(cube1.position)
+spotLight.lookAt(cube1.position);
+spotLight2.lookAt(cube1.position);
+spotLight3.lookAt(cube1.position);
 
 const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
 
-window.addEventListener('resize', onWindowResize);
+window.addEventListener("resize", onWindowResize);
 function onWindowResize() {
   const aspectRatio = window.innerWidth / window.innerHeight;
   camera.aspect = aspectRatio;
   camera.updateProjectionMatrix();
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 

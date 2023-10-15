@@ -1,11 +1,29 @@
+/* eslint-env node */
 /** @type {import("eslint").Linter.Config} */
+
 module.exports = {
-  extends: ["plugin:astro/recommended"],
   parser: "@typescript-eslint/parser",
+  root: true,
+
+  plugins: ["@typescript-eslint", "astro"],
+  extends: [
+    "eslint:recommended",
+    "plugin:astro/recommended",
+    "plugin:astro/jsx-a11y-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:jsx-a11y/recommended",
+    "plugin:tailwindcss/recommended",
+    "prettier",
+  ],
   parserOptions: {
-    tsconfigRootDir: __dirname,
     sourceType: "module",
     ecmaVersion: "latest",
+    project: ["./tsconfig.json"],
+  },
+  rules: {
+    "tailwindcss/classnames-order": "off", // Enforced by Prettier
+    "tailwindcss/no-custom-classname": "off", // Avoid distractions while typing
   },
   overrides: [
     {
@@ -15,7 +33,10 @@ module.exports = {
         parser: "@typescript-eslint/parser",
         extraFileExtensions: [".astro"],
       },
-      rules: {},
+      rules: {
+        "import/no-unresolved": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+      },
     },
   ],
 };

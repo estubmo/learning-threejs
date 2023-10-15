@@ -21,9 +21,10 @@
     "dev": "bunx --bun astro dev",
     "start": "bunx --bun astro dev",
     "build": "bunx --bun astro build",
-    "preview": "bunx --bun astro preview",
-    "astro": "astro",
-    "lint": "prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,astro}\""
+    "preview": "astro preview",
+    "lint": "bunx eslint \"src/**/*.{js,jsx,ts,tsx,md,astro}\"",
+    "lint:astro": "bunx --bun astro check",
+    "lint:format": "bunx --bun prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,astro}\""
   },
   "dependencies": {
     "@astrojs/mdx": "^1.1.2",
@@ -34,17 +35,22 @@
     "three": "^0.157.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.2.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
+    "@total-typescript/ts-reset": "^0.5.1",
     "@types/three": "^0.157.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
     "bun-types": "^1.0.6",
     "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-astro": "^0.29.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-tailwindcss": "^3.13.0",
     "prettier": "^3.0.3",
-    "prettier-config-standard": "^7.0.0",
     "prettier-plugin-astro": "^0.12.0",
     "prettier-plugin-tailwindcss": "^0.5.6",
-    "rehype-pretty-code": "^0.10.1"
+    "rehype-pretty-code": "^0.10.1",
+    "typescript": "^5.2.2"
   }
 }

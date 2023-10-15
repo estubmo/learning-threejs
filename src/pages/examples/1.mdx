@@ -51,9 +51,9 @@ camera.lookAt(mesh.position);
 
 window.addEventListener('resize', onWindowResize);
 function onWindowResize() {
-  camera.updateProjectionMatrix();
-  camera.aspect = window.innerWidth / window.innerHeight;
-  renderer.setSize(window.innerWidth, window.innerHeight);
+camera.updateProjectionMatrix();
+camera.aspect = window.innerWidth / window.innerHeight;
+renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 renderer.render(scene, camera);
