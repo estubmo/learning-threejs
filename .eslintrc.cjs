@@ -4,7 +4,6 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   root: true,
-
   plugins: ["@typescript-eslint", "astro"],
   extends: [
     "eslint:recommended",

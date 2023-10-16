@@ -29,15 +29,22 @@
   "dependencies": {
     "@astrojs/mdx": "^1.1.2",
     "@astrojs/tailwind": "^5.0.2",
+    "@astrojs/vue": "^3.0.1",
+    "@tresjs/cientos": "^3.4.1",
+    "@tresjs/core": "^3.3.0",
+    "add": "^2.0.6",
     "astro": "^3.3.0",
+    "dat.gui": "^0.7.9",
     "gsap": "^3.12.2",
     "tailwindcss": "^3.0.24",
-    "three": "^0.157.0"
+    "three": "^0.157.0",
+    "vue": "^3.2.30"
   },
   "devDependencies": {
     "@astrojs/check": "^0.2.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@total-typescript/ts-reset": "^0.5.1",
+    "@types/dat.gui": "^0.7.10",
     "@types/three": "^0.157.0",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",

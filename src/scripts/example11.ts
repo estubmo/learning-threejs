@@ -1,0 +1,98 @@
+import * as dat from "dat.gui";
+import gsap from 'gsap';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
+
+/**
+ * debug gui init
+ */
+
+const gui = new dat.GUI({
+  closed: true,
+  width: 400
+});
+
+/**
+ * cursor
+ */
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / window.innerWidth - 0.5;
+  cursor.y = -(event.clientY / window.innerHeight - 0.5);
+});
+
+// camera
+const aspectRatio = window.innerWidth / window.innerHeight;
+const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
+camera.position.set(0, 0, 5);
+
+// renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.setClearAlpha(0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// canvas
+canvas.appendChild(renderer.domElement);
+
+// scene
+const scene = new THREE.Scene();
+
+// cube parameters
+const parameters = {
+  color: 0xff0000,
+  spin: () => {
+    gsap.to(cube1.rotation, { duration: 1, y: cube1.rotation.y + Math.PI * 2 });
+  }
+}
+
+
+const material = new THREE.MeshBasicMaterial(parameters);
+const cube1 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  material,
+);
+
+// debug gui
+const cubeFolder = gui.addFolder("Cube");
+cubeFolder.add(cube1.position, "x").min(-10).max(10).step(0.01);
+cubeFolder.add(cube1.position, "y").min(-10).max(10).step(0.01);
+cubeFolder.add(cube1.position, "z").min(-10).max(10).step(0.01);
+cubeFolder.add(material, "wireframe")
+cubeFolder.addColor(parameters, "color").onChange(() => {
+  material.color.set(parameters.color);
+})
+cubeFolder.add(parameters, "spin");
+cubeFolder.open();
+
+scene.add(cube1);
+
+// axes helper
+const axesHelper = new THREE.AxesHelper(2);
+scene.add(axesHelper);
+
+// resize event listener
+window.addEventListener("resize", onWindowResize);
+function onWindowResize() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  camera.aspect = aspectRatio;
+  camera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate() {
+  renderer.render(scene, camera);
+
+  // Update controls
+  controls.update();
+}
