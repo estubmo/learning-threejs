@@ -1,0 +1,183 @@
+import Example12 from "../../components/Example12.astro";
+import Layout from "../../layouts/Layout.astro";
+
+<Layout title="Debug - With dat.GUI">
+  <div class="h-screen py-10 md:py-20">
+    <Example12 title="Debug" description="with dat.GUI" />
+  </div>
+  <div class="h-screen overflow-y-scroll rounded-2xl my-10 md:my-20 container max-w-7xl place-self-center">
+
+```javascript
+import * as dat from "dat.gui";
+
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
+
+/**
+ * debug gui init
+ */
+
+const gui = new dat.GUI({
+  closed: true,
+  width: 400
+});
+
+// loading manager
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onStart = () => {
+  console.log("loading started");
+}
+loadingManager.onProgress = () => {
+  console.log("loading in progress");
+}
+
+loadingManager.onLoad = () => {
+  console.log("loading completed");
+}
+
+// textures
+const textureLoader = new THREE.TextureLoader(loadingManager);
+const minecraftColorTexture = textureLoader.load("/textures/minecraft.png");
+const colorTexture = textureLoader.load("/textures/door/color.jpg");
+const colorTexture2 = textureLoader.load("/textures/door/color.jpg");
+const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
+const ambientOcclusionTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg");
+
+colorTexture.center.x = 0.5;
+colorTexture.center.y = 0.5;
+alphaTexture.center.x = 0.5;
+alphaTexture.center.y = 0.5;
+ambientOcclusionTexture.center.x = 0.5;
+ambientOcclusionTexture.center.y = 0.5;
+
+/**
+ * cursor
+ */
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / window.innerWidth - 0.5;
+  cursor.y = -(event.clientY / window.innerHeight - 0.5);
+});
+
+// camera
+const aspectRatio = window.innerWidth / window.innerHeight;
+const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
+camera.position.set(0, 0, 5);
+
+// renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.setClearAlpha(0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// canvas
+canvas.appendChild(renderer.domElement);
+
+// scene
+const scene = new THREE.Scene();
+
+const material = new THREE.MeshBasicMaterial({
+  map: colorTexture2,
+  alphaMap: alphaTexture,
+  aoMap: ambientOcclusionTexture,
+
+});
+
+const doorCube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({
+    map: colorTexture,
+  })
+);
+
+const doorWithAlphaCube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  material,
+);
+
+doorWithAlphaCube.position.x = 2;
+
+const minecraftCube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({
+    map: minecraftColorTexture,
+  })
+);
+minecraftColorTexture.magFilter = THREE.NearestFilter;
+
+minecraftCube.position.x = -2;
+
+// debug gui
+const doorCubeFolder = gui.addFolder("Door Cube");
+doorCubeFolder.add(colorTexture.center, "x").min(0).max(1).step(0.01).name("centerX").onChange(() => {
+  colorTexture.needsUpdate = true;
+});
+doorCubeFolder.add(colorTexture.center, "y").min(0).max(1).step(0.01).name("centerY").onChange(() => {
+  colorTexture.needsUpdate = true;
+});
+doorCubeFolder.add(colorTexture, "minFilter", {
+  NearestFilter: THREE.NearestFilter,
+  LinearFilter: THREE.LinearFilter,
+}).onChange(() => {
+  colorTexture.needsUpdate = true;
+});
+
+doorCubeFolder.open();
+
+const minecraftCubeFolder = gui.addFolder("Minecraft Cube");
+minecraftCubeFolder.add(minecraftColorTexture, "magFilter", {
+  NearestFilter: THREE.NearestFilter,
+  LinearFilter: THREE.LinearFilter,
+}).onChange(() => {
+  minecraftColorTexture.needsUpdate = true;
+});
+
+minecraftCubeFolder.open();
+
+const doorWithAlphaCubeFolder = gui.addFolder("Door With Alpha Cube");
+doorWithAlphaCubeFolder.add(material, "wireframe")
+doorWithAlphaCubeFolder.add(material, "aoMapIntensity").min(0).max(10).step(0.01).name("aoMapIntensity").onChange(() => {
+  material.needsUpdate = true;
+});
+doorWithAlphaCubeFolder.open();
+
+scene.add(doorCube);
+scene.add(doorWithAlphaCube);
+scene.add(minecraftCube);
+
+// axes helper
+const axesHelper = new THREE.AxesHelper(2);
+scene.add(axesHelper);
+
+// resize event listener
+window.addEventListener("resize", onWindowResize);
+function onWindowResize() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  camera.aspect = aspectRatio;
+  camera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate() {
+  renderer.render(scene, camera);
+  colorTexture.rotation = cursor.x * Math.PI * 2;
+
+  // Update controls
+  controls.update();
+}
+```
+
+  </div>
+
+</Layout>
