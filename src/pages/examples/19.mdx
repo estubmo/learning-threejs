@@ -1,5 +1,12 @@
+import Example19 from "../../components/Example19.astro";
+import Layout from "../../layouts/Layout.astro";
+
+<Layout title="Shadows - Simple Shadow Texture">
+  <Example19 title="Shadows" description="Simple Shadow Texture" />
+  <div class="h-screen overflow-y-scroll rounded-2xl my-10 md:my-20 container max-w-7xl place-self-center">
+
+```javascript
 import * as dat from "dat.gui";
-import gsap from "gsap";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
@@ -27,10 +34,13 @@ window.addEventListener("mousemove", (event) => {
   cursor.y = -(event.clientY / window.innerHeight - 0.5);
 });
 
+const textureLoader = new THREE.TextureLoader();
+const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+
 // camera
 const aspectRatio = window.innerWidth / window.innerHeight;
 const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
-camera.position.set(0, 0, 5);
+camera.position.set(1, 1, 2);
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -47,34 +57,36 @@ canvas.appendChild(renderer.domElement);
 // scene
 const scene = new THREE.Scene();
 
-// cube parameters
-const parameters = {
-  color: 0xff0000,
-  spin: () => {
-    gsap.to(cube1.rotation, { duration: 1, y: cube1.rotation.y + Math.PI * 2 });
-  },
-};
+// lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+scene.add(ambientLight);
 
-const material = new THREE.MeshBasicMaterial(parameters);
-const cube1 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+directionalLight.position.set(2, 2, -1);
+scene.add(directionalLight);
 
-// debug gui
-const cubeFolder = gui.addFolder("Cube");
-cubeFolder.add(cube1.position, "x").min(-10).max(10).step(0.01);
-cubeFolder.add(cube1.position, "y").min(-10).max(10).step(0.01);
-cubeFolder.add(cube1.position, "z").min(-10).max(10).step(0.01);
-cubeFolder.add(material, "wireframe");
-cubeFolder.addColor(parameters, "color").onChange(() => {
-  material.color.set(parameters.color);
-});
-cubeFolder.add(parameters, "spin");
-cubeFolder.open();
+// material
+const material = new THREE.MeshStandardMaterial();
+material.color = new THREE.Color(0xffffff);
+material.roughness = 0.7;
+gui.add(material, "roughness").min(0).max(1).step(0.001);
 
-scene.add(cube1);
+// sphere
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
+sphere.castShadow = true;
 
-// axes helper
-const axesHelper = new THREE.AxesHelper(2);
-scene.add(axesHelper);
+gui.add(sphere.position, "y").min(-1).max(1).step(0.001).name("sphereY");
+
+// plane
+const plane = new THREE.Mesh(
+  new THREE.PlaneGeometry(5, 5),
+  new THREE.MeshBasicMaterial({ map: bakedShadow }),
+);
+plane.rotation.x = -Math.PI * 0.5;
+plane.position.y = -0.5;
+plane.receiveShadow = true;
+
+scene.add(sphere, plane);
 
 // resize event listener
 window.addEventListener("resize", onWindowResize);
@@ -93,3 +105,8 @@ function animate() {
   // Update controls
   controls.update();
 }
+```
+
+  </div>
+
+</Layout>

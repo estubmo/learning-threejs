@@ -1,7 +1,7 @@
 import * as dat from "dat.gui";
-
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 
 /**
@@ -10,7 +10,7 @@ const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 
 const gui = new dat.GUI({
   closed: true,
-  width: 400
+  width: 400,
 });
 
 // loading manager
@@ -18,14 +18,14 @@ const loadingManager = new THREE.LoadingManager();
 
 loadingManager.onStart = () => {
   console.log("loading started");
-}
+};
 loadingManager.onProgress = () => {
   console.log("loading in progress");
-}
+};
 
 loadingManager.onLoad = () => {
   console.log("loading completed");
-}
+};
 
 // textures
 const textureLoader = new THREE.TextureLoader(loadingManager);
@@ -33,7 +33,9 @@ const minecraftColorTexture = textureLoader.load("/textures/minecraft.png");
 const colorTexture = textureLoader.load("/textures/door/color.jpg");
 const colorTexture2 = textureLoader.load("/textures/door/color.jpg");
 const alphaTexture = textureLoader.load("/textures/door/alpha.jpg");
-const ambientOcclusionTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg");
+const ambientOcclusionTexture = textureLoader.load(
+  "/textures/door/ambientOcclusion.jpg",
+);
 
 colorTexture.center.x = 0.5;
 colorTexture.center.y = 0.5;
@@ -79,14 +81,13 @@ const material = new THREE.MeshBasicMaterial({
   map: colorTexture2,
   alphaMap: alphaTexture,
   aoMap: ambientOcclusionTexture,
-
 });
 
 const doorCube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
   new THREE.MeshBasicMaterial({
     map: colorTexture,
-  })
+  }),
 );
 
 const doorWithAlphaCube = new THREE.Mesh(
@@ -100,7 +101,7 @@ const minecraftCube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
   new THREE.MeshBasicMaterial({
     map: minecraftColorTexture,
-  })
+  }),
 );
 minecraftColorTexture.magFilter = THREE.NearestFilter;
 
@@ -108,36 +109,58 @@ minecraftCube.position.x = -2;
 
 // debug gui
 const doorCubeFolder = gui.addFolder("Door Cube");
-doorCubeFolder.add(colorTexture.center, "x").min(0).max(1).step(0.01).name("centerX").onChange(() => {
-  colorTexture.needsUpdate = true;
-});
-doorCubeFolder.add(colorTexture.center, "y").min(0).max(1).step(0.01).name("centerY").onChange(() => {
-  colorTexture.needsUpdate = true;
-});
-doorCubeFolder.add(colorTexture, "minFilter", {
-  NearestFilter: THREE.NearestFilter,
-  LinearFilter: THREE.LinearFilter,
-}).onChange(() => {
-  colorTexture.needsUpdate = true;
-});
+doorCubeFolder
+  .add(colorTexture.center, "x")
+  .min(0)
+  .max(1)
+  .step(0.01)
+  .name("centerX")
+  .onChange(() => {
+    colorTexture.needsUpdate = true;
+  });
+doorCubeFolder
+  .add(colorTexture.center, "y")
+  .min(0)
+  .max(1)
+  .step(0.01)
+  .name("centerY")
+  .onChange(() => {
+    colorTexture.needsUpdate = true;
+  });
+doorCubeFolder
+  .add(colorTexture, "minFilter", {
+    NearestFilter: THREE.NearestFilter,
+    LinearFilter: THREE.LinearFilter,
+  })
+  .onChange(() => {
+    colorTexture.needsUpdate = true;
+  });
 
 doorCubeFolder.open();
 
 const minecraftCubeFolder = gui.addFolder("Minecraft Cube");
-minecraftCubeFolder.add(minecraftColorTexture, "magFilter", {
-  NearestFilter: THREE.NearestFilter,
-  LinearFilter: THREE.LinearFilter,
-}).onChange(() => {
-  minecraftColorTexture.needsUpdate = true;
-});
+minecraftCubeFolder
+  .add(minecraftColorTexture, "magFilter", {
+    NearestFilter: THREE.NearestFilter,
+    LinearFilter: THREE.LinearFilter,
+  })
+  .onChange(() => {
+    minecraftColorTexture.needsUpdate = true;
+  });
 
 minecraftCubeFolder.open();
 
 const doorWithAlphaCubeFolder = gui.addFolder("Door With Alpha Cube");
-doorWithAlphaCubeFolder.add(material, "wireframe")
-doorWithAlphaCubeFolder.add(material, "aoMapIntensity").min(0).max(10).step(0.01).name("aoMapIntensity").onChange(() => {
-  material.needsUpdate = true;
-});
+doorWithAlphaCubeFolder.add(material, "wireframe");
+doorWithAlphaCubeFolder
+  .add(material, "aoMapIntensity")
+  .min(0)
+  .max(10)
+  .step(0.01)
+  .name("aoMapIntensity")
+  .onChange(() => {
+    material.needsUpdate = true;
+  });
 doorWithAlphaCubeFolder.open();
 
 scene.add(doorCube);

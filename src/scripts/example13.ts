@@ -1,7 +1,7 @@
 import * as dat from "dat.gui";
-
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 
 /**
@@ -10,7 +10,7 @@ const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
 
 const gui = new dat.GUI({
   closed: true,
-  width: 400
+  width: 400,
 });
 
 /**
@@ -32,7 +32,9 @@ const textureLoader = new THREE.TextureLoader(loadingManager);
 const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
 const doorAlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
 const doorNormalTexture = textureLoader.load("/textures/door/normal.jpg");
-const doorAmbientOcclusionTexture = textureLoader.load("/textures/door/ambientOcclusion.jpg");
+const doorAmbientOcclusionTexture = textureLoader.load(
+  "/textures/door/ambientOcclusion.jpg",
+);
 const doorHeightTexture = textureLoader.load("/textures/door/height.jpg");
 const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
 const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
@@ -72,10 +74,7 @@ material.alphaMap = doorAlphaTexture;
 
 material.transparent = true;
 
-const sphere = new THREE.Mesh(
-  new THREE.SphereGeometry(0.5, 64, 64),
-  material,
-);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 64, 64), material);
 
 sphere.position.x = -1.5;
 
@@ -84,10 +83,7 @@ sphere.geometry.setAttribute(
   new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2),
 );
 
-const plane = new THREE.Mesh(
-  new THREE.PlaneGeometry(1, 1, 32, 32),
-  material,
-);
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 32, 32), material);
 
 plane.geometry.setAttribute(
   "uv2",
@@ -98,7 +94,6 @@ const torus = new THREE.Mesh(
   new THREE.TorusGeometry(0.3, 0.2, 64, 128),
   material,
 );
-
 
 torus.geometry.setAttribute(
   "uv2",

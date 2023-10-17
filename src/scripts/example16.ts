@@ -1,0 +1,165 @@
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
+
+const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
+
+/**
+ * cursor
+ */
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / window.innerWidth - 0.5;
+  cursor.y = -(event.clientY / window.innerHeight - 0.5);
+});
+
+// camera
+const aspectRatio = window.innerWidth / window.innerHeight;
+const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
+camera.position.set(0, 0, 5);
+
+// renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.setClearAlpha(0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// canvas
+canvas.appendChild(renderer.domElement);
+
+// scene
+const scene = new THREE.Scene();
+
+// lights
+const ambientLight = new THREE.AmbientLight();
+ambientLight.color = new THREE.Color(0xffffff);
+ambientLight.intensity = 0.5;
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight();
+directionalLight.color = new THREE.Color(0x00fffc);
+directionalLight.intensity = 1;
+directionalLight.position.set(-2, 2, 2);
+scene.add(directionalLight);
+
+const directionalLightHelper = new THREE.DirectionalLightHelper(
+  directionalLight,
+  0.2,
+);
+scene.add(directionalLightHelper);
+
+const hemisphereLight = new THREE.HemisphereLight();
+hemisphereLight.color = new THREE.Color(0xff0000);
+hemisphereLight.groundColor = new THREE.Color(0x0000ff);
+hemisphereLight.intensity = 0.5;
+scene.add(hemisphereLight);
+
+const hemisphereLightHelper = new THREE.HemisphereLightHelper(
+  hemisphereLight,
+  0.2,
+);
+scene.add(hemisphereLightHelper);
+
+const pointLight = new THREE.PointLight();
+pointLight.color = new THREE.Color(0xff9000);
+pointLight.distance = 5;
+pointLight.intensity = 2;
+pointLight.position.set(1.5, 0, 1.5);
+scene.add(pointLight);
+
+const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
+scene.add(pointLightHelper);
+
+// High performance cost
+// Only works with MeshStandardMaterial or MeshPhysicalMaterial
+const rectAreaLight = new THREE.RectAreaLight(0x4c00ff, 2, 1, 1);
+rectAreaLight.position.set(-1.5, 0, 1.5);
+rectAreaLight.lookAt(new THREE.Vector3());
+scene.add(rectAreaLight);
+
+const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight);
+scene.add(rectAreaLightHelper);
+
+// High performance cost
+const spotLight = new THREE.SpotLight();
+spotLight.color = new THREE.Color(0x78ff00);
+spotLight.distance = 5;
+spotLight.intensity = 10;
+spotLight.position.set(0, 1, 2);
+spotLight.penumbra = 0.5;
+spotLight.angle = Math.PI / 4;
+
+const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+scene.add(spotLightHelper);
+
+// Spotlight needs an object as a target for rotation
+const target = new THREE.Object3D();
+target.position.x = -0.75;
+scene.add(target);
+spotLight.target = target;
+
+scene.add(spotLight);
+
+// If moving target after adding helper, update helper
+window.requestAnimationFrame(() => {
+  spotLightHelper.update();
+});
+// material
+const material = new THREE.MeshStandardMaterial();
+material.roughness = 0.3;
+material.metalness = 0.1;
+
+// sphere
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
+sphere.position.x = -1.5;
+scene.add(sphere);
+
+// cube
+const cube = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), material);
+scene.add(cube);
+
+// torus
+const torus = new THREE.Mesh(
+  new THREE.TorusGeometry(0.3, 0.2, 32, 64),
+  material,
+);
+torus.position.x = 1.5;
+scene.add(torus);
+
+// plane
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
+plane.rotation.x = -Math.PI * 0.5;
+plane.position.y = -0.75;
+scene.add(plane);
+
+// resize event listener
+window.addEventListener("resize", onWindowResize);
+function onWindowResize() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  camera.aspect = aspectRatio;
+  camera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate() {
+  renderer.render(scene, camera);
+
+  // Update objects
+  sphere.rotation.y += 0.005;
+  cube.rotation.x += 0.005;
+  cube.rotation.y += 0.005;
+  torus.rotation.x += 0.005;
+  torus.rotation.y += 0.005;
+
+  // Update controls
+  controls.update();
+}
