@@ -1,0 +1,153 @@
+import Example23 from "../../components/Example23.astro";
+import Layout from "../../layouts/Layout.astro";
+
+<Layout title="Raycasting - Basics">
+  <Example23 title="Raycasting" description="Basics" />
+  <div class="h-screen overflow-y-scroll rounded-2xl my-10 md:my-20 container max-w-7xl place-self-center">
+
+```javascript
+import * as dat from "dat.gui";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
+const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
+
+/**
+ * debug gui init
+ */
+
+const gui = new dat.GUI({
+  closed: true,
+  width: 400,
+});
+
+/**
+ * cursor
+ */
+const cursor = new THREE.Vector2();
+
+window.addEventListener("mousemove", (event) => {
+  cursor.x = (event.clientX / window.innerWidth) * 2 - 1;
+  cursor.y = -((event.clientY / window.innerHeight) * 2 - 1);
+});
+
+window.addEventListener("click", () => {
+  if (currentIntersect) {
+    if (
+      currentIntersect.object instanceof THREE.Mesh &&
+      currentIntersect.object.material instanceof THREE.MeshBasicMaterial
+    ) {
+      currentIntersect.object.material.color.set(0xff0000);
+    }
+  }
+});
+
+// camera
+const aspectRatio = window.innerWidth / window.innerHeight;
+const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
+camera.position.set(0, 0, 5);
+
+// renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.setClearAlpha(0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// canvas
+canvas.appendChild(renderer.domElement);
+
+// scene
+const scene = new THREE.Scene();
+
+const object1 = new THREE.Mesh(
+  new THREE.SphereGeometry(0.5, 16, 16),
+  new THREE.MeshBasicMaterial({ color: 0xffffff }),
+);
+
+object1.position.x = -2;
+
+scene.add(object1);
+
+const object2 = new THREE.Mesh(
+  new THREE.SphereGeometry(0.5, 16, 16),
+  new THREE.MeshBasicMaterial({ color: 0xffffff }),
+);
+
+scene.add(object2);
+
+const object3 = new THREE.Mesh(
+  new THREE.SphereGeometry(0.5, 16, 16),
+  new THREE.MeshBasicMaterial({ color: 0xffffff }),
+);
+
+object3.position.x = 2;
+
+scene.add(object3);
+
+// resize event listener
+window.addEventListener("resize", onWindowResize);
+function onWindowResize() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  camera.aspect = aspectRatio;
+  camera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+const clock = new THREE.Clock();
+
+let currentIntersect: THREE.Intersection<
+  THREE.Object3D<THREE.Object3DEventMap>
+> | null = null;
+
+function animate() {
+  const elapsedTime = clock.getElapsedTime();
+
+  // cursor
+  const raycaster = new THREE.Raycaster();
+
+  raycaster.setFromCamera(cursor, camera);
+
+  const objectsToTest = [object1, object2, object3];
+  const intersects = raycaster.intersectObjects(objectsToTest);
+
+  if (intersects.length) {
+    if (currentIntersect === null) {
+      currentIntersect = intersects[0];
+      if (
+        currentIntersect.object instanceof THREE.Mesh &&
+        currentIntersect.object.material instanceof THREE.MeshBasicMaterial
+      ) {
+        currentIntersect.object.material.color.set(0x00ff00);
+      }
+    }
+  } else {
+    if (currentIntersect) {
+      if (
+        currentIntersect.object instanceof THREE.Mesh &&
+        currentIntersect.object.material instanceof THREE.MeshBasicMaterial
+      ) {
+        currentIntersect.object.material.color.set(0xffffff);
+      }
+    }
+    currentIntersect = null;
+  }
+
+  // animate objects
+  object1.position.y = Math.sin(elapsedTime * 0.3) * 1.5;
+  object2.position.y = Math.sin(elapsedTime * 0.8) * 1.5;
+  object3.position.y = Math.sin(elapsedTime * 1.4) * 1.5;
+
+  renderer.render(scene, camera);
+
+  // Update controls
+  controls.update();
+}
+```
+
+  </div>
+</Layout>
