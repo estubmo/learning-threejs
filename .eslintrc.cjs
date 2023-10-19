@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     "tailwindcss/classnames-order": "off", // Enforced by Prettier
     "tailwindcss/no-custom-classname": "off", // Avoid distractions while typing
+    "@typescript-eslint/no-unused-vars": "warn",
   },
   overrides: [
     {

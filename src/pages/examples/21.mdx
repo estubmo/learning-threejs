@@ -1,0 +1,126 @@
+import Example21 from "../../components/Example21.astro";
+import Layout from "../../layouts/Layout.astro";
+
+<Layout title="Particles - Basics  (Unoptimized)">
+  <Example21 title="Particles" description="Basics (Unoptimized)" />
+  <div class="h-screen overflow-y-scroll rounded-2xl my-10 md:my-20 container max-w-7xl place-self-center">
+
+```javascript
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
+const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
+
+/**
+ * cursor
+ */
+const cursor = {
+  x: 0,
+  y: 0,
+};
+
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / window.innerWidth - 0.5;
+  cursor.y = -(event.clientY / window.innerHeight - 0.5);
+});
+
+const textureLoader = new THREE.TextureLoader();
+const particleTexture = textureLoader.load("/textures/particles/2.png");
+
+// camera
+const aspectRatio = window.innerWidth / window.innerHeight;
+const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
+camera.position.set(4, 2, 5);
+
+// renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.setClearAlpha(0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// canvas
+canvas.appendChild(renderer.domElement);
+
+// scene
+const scene = new THREE.Scene();
+
+// particles
+
+// geometry
+// const particleGeometry = new THREE.TorusGeometry(1, 0.8, 32, 100);
+const particlesGeometry = new THREE.BufferGeometry();
+const count = 5000;
+
+const positions = new Float32Array(count * 3);
+const colors = new Float32Array(count * 3);
+
+for (let i = 0; i < count * 3; i++) {
+  positions[i] = (Math.random() - 0.5) * 10;
+  colors[i] = Math.random();
+}
+
+particlesGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(positions, 3),
+);
+
+particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+// material
+const particleMaterial = new THREE.PointsMaterial();
+particleMaterial.size = 0.1;
+particleMaterial.sizeAttenuation = true;
+// particleMaterial.color = new THREE.Color("#ff88cc");
+particleMaterial.transparent = true;
+particleMaterial.alphaMap = particleTexture;
+// particleMaterial.alphaTest = 0.001;
+// particleMaterial.depthTest = false;
+particleMaterial.depthWrite = false;
+particleMaterial.blending = THREE.AdditiveBlending;
+particleMaterial.vertexColors = true;
+
+// points
+const particles = new THREE.Points(particlesGeometry, particleMaterial);
+scene.add(particles);
+
+// resize event listener
+window.addEventListener("resize", onWindowResize);
+function onWindowResize() {
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  camera.aspect = aspectRatio;
+  camera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+const clock = new THREE.Clock();
+
+function animate() {
+  const elapsedTime = clock.getElapsedTime();
+
+  particles.rotation.y = elapsedTime * 0.2;
+
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+
+    const x = particlesGeometry.attributes.position.array[i3];
+    particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(
+      elapsedTime + x,
+    );
+  }
+  particlesGeometry.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+
+  // Update controls
+  controls.update();
+}
+
+```
+
+  </div>
+
+</Layout>
