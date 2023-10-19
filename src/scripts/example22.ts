@@ -26,8 +26,6 @@ window.addEventListener("mousemove", (event) => {
   cursor.y = -(event.clientY / window.innerHeight - 0.5);
 });
 
-const textureLoader = new THREE.TextureLoader();
-
 // camera
 const aspectRatio = window.innerWidth / window.innerHeight;
 const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 100);
@@ -37,7 +35,7 @@ camera.position.set(4, 4, 5);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setAnimationLoop(animate);
-renderer.setClearAlpha(1);
+renderer.setClearAlpha(0);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
