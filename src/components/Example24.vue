@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ScrollControls, Sky, useProgress } from "@tresjs/cientos";
 import { TresCanvas } from "@tresjs/core";
-import { useControls } from "@tresjs/leches";
-import "@tresjs/leches/styles";
 import { BasicShadowMap, Color, NoToneMapping, SRGBColorSpace } from "three";
 import { ref } from "vue";
 import Cloud from "./Cloud.vue";
@@ -21,8 +19,6 @@ const gl = {
   outputColorSpace: SRGBColorSpace,
   toneMapping: NoToneMapping,
 };
-
-useControls("fpsgraph");
 
 const { progress: prog, hasFinishLoading } = await useProgress();
 </script>
@@ -49,7 +45,6 @@ const { progress: prog, hasFinishLoading } = await useProgress();
         <div class="w-1/2 text-light text-right">
           <h2 class="text-4xl font-extrabold mb-4">This has been fun!</h2>
           <p class="font-italic">Take it to the 🌕 🚀</p>
-          <p class="font-italic">Progress{{ prog }}!</p>
         </div>
       </section>
     </main>
@@ -60,7 +55,7 @@ const { progress: prog, hasFinishLoading } = await useProgress();
     >
       <div
         v-show="!hasFinishLoading"
-        class="fixed bg-amber-800 text-white top-0 left-0 w-full h-full z-80 flex justify-center items-center"
+        class="fixed bg-amber-800 text-white top-0 left-0 w-full h-full z-80 flex justify-center items-center font-mono"
       >
         {{ prog }}
       </div>
