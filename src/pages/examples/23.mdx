@@ -6,20 +6,10 @@ import Layout from "../../layouts/Layout.astro";
   <div class="h-screen overflow-y-scroll rounded-2xl my-10 md:my-20 container max-w-7xl place-self-center">
 
 ```javascript
-import * as dat from "dat.gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
-
-/**
- * debug gui init
- */
-
-const gui = new dat.GUI({
-  closed: true,
-  width: 400,
-});
 
 /**
  * cursor

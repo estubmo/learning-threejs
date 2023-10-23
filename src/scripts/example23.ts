@@ -1,17 +1,7 @@
-import * as dat from "dat.gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.querySelector<HTMLDivElement>("#canvas-container")!;
-
-/**
- * debug gui init
- */
-
-const gui = new dat.GUI({
-  closed: true,
-  width: 400,
-});
 
 /**
  * cursor
