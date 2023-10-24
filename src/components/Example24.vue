@@ -24,7 +24,7 @@ const { progress: prog, hasFinishLoading } = await useProgress();
 </script>
 
 <template>
-  <div class="w-full h-[100vh] relative scroll-smooth px-2">
+  <div class="w-full h-[100vh] relative scroll-smooth px-2 text-zinc-200">
     <main>
       <section class="min-h-screen container flex justify-end items-center">
         <div class="w-1/2 text-right">
