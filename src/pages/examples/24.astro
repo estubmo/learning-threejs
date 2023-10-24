@@ -1,6 +1,8 @@
-import Example24 from "../../components/Example24.astro";
+---
+import Example24 from "../../components/Example24.vue";
 import FullScreenLayout from "../../layouts/FullScreenLayout.astro";
+---
 
 <FullScreenLayout title="Vue - TresJS ScrollControls">
-  <Example24 title="Vue" description="TresJS ScrollControls" />
+  <Example24 client:only="vue" />
 </FullScreenLayout>
