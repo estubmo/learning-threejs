@@ -51,6 +51,7 @@ function lookAtPosition(value: any) {
 onLoop(({ elapsed }) => {
   // cameraRef.value.position.x = Math.sin(elapsed);
   cubeRef.value.rotation.y += 0.01;
+
   // updateCamera();
 });
 const { progress: prog, hasFinishLoading } = await useProgress();
@@ -99,23 +100,22 @@ const { progress: prog, hasFinishLoading } = await useProgress();
           :lookAtPosition="lookAtPosition"
         />
       </Suspense> -->
-      <ScrollControls :distance="20" :smooth-scroll="0.1">
-        <TresMesh ref="cubeRef" :position="[0, 0, 0]">
-          <TresBoxGeometry />
+      <TresMesh ref="cubeRef" :position="[0, 0, 0]">
+        <TresBoxGeometry />
 
-          <TresMeshNormalMaterial />
-          <Html
-            transform
-            :distance-factor="4"
-            :position="[0, 0, 0.5001]"
-            :scale="[0.75, 0.75, 0.75]"
-          >
-            <h1 class="bg-white dark:bg-dark text-xs p-1 rounded">
-              I'm a Box 📦
-            </h1>
-          </Html>
-        </TresMesh>
-      </ScrollControls>
+        <TresMeshNormalMaterial />
+        <Html
+          transform
+          :distance-factor="4"
+          :position="[0, 0, 0.5001]"
+          :scale="[0.75, 0.75, 0.75]"
+        >
+          <h1 class="bg-white dark:bg-dark text-xs p-1 rounded">
+            I'm a Box 📦
+          </h1>
+        </Html>
+      </TresMesh>
+      <ScrollControls :distance="20" :smooth-scroll="0.1"> </ScrollControls>
 
       <TresDirectionalLight
         :intensity="3"
